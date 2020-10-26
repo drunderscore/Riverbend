@@ -6,10 +6,8 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include <fstream>
-#include "LibXNA/XNB.h"
 #include "LibXNA/TypeReaders/Texture2DReader.h"
 #include "LibXNA/Stream.h"
-#include "ImGuiExtras.h"
 #include <filesystem>
 #include "ImGuiWindows/ActionBar.h"
 #include "ImGuiWindows/FilePicker.h"
