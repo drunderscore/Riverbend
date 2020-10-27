@@ -23,6 +23,12 @@ namespace LibXNA
             m_base.read(reinterpret_cast<char*>(&val), sizeof(T));
         }
 
+        template<typename T>
+        void read(T* val)
+        {
+            m_base.read(reinterpret_cast<char*>(val), sizeof(T));
+        }
+
         std::string read_string()
         {
             auto len = read_7bit_encoded_int();

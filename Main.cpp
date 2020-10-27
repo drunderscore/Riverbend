@@ -4,7 +4,7 @@
 #include "loguru/loguru.hpp"
 #include "NativeMessageBox.h"
 #include "SDL.h"
-#include "LibXNA/Compress/XCompress32.h"
+#include "LibXNA/Compress/XCompress.h"
 
 int main()
 {

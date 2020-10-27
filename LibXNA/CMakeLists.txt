@@ -12,8 +12,9 @@ add_library(LibXNA STATIC
     Stream.h
     Result.h
 
-    Compress/XCompress32.h
-    Compress/XCompress32.cpp
+    Compress/XCompress.h
+    Compress/XCompress.cpp
+    Compress/Context.h
 
     TypeReaders/Reader.h
     TypeReaders/Reader.cpp
