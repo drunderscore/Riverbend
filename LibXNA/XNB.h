@@ -69,6 +69,7 @@ namespace LibXNA
         const std::vector<TypeReader> type_readers() const { return m_type_readers; }
         const Header& header() const { return m_header; }
         std::optional<u32> decompressed_size() { return m_decompressed_size; }
+        const std::optional<TypeReader> primary_object() const;
 
         bool is_compressed()
         {
@@ -84,6 +85,7 @@ namespace LibXNA
         Header m_header;
         std::optional<u32> m_decompressed_size;
         std::vector<TypeReader> m_type_readers;
-        u32 m_shared_resource_count;
+        u32 m_shared_resource_count = 0;
+        u32 m_primary_object_typeid = 0;
     };
 }

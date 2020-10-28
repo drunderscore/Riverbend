@@ -7,7 +7,7 @@ namespace LibXNA
     class TextureReader : public Reader
     {
     public:
-        TextureReader(Stream& stream) : Reader(stream)
+        TextureReader(Stream& stream)
         {
             stream.read(m_format);
             stream.read(m_width);

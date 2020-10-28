@@ -221,10 +221,17 @@ void Application::draw_properties()
                 ImGui::EndTable();
             }
 
-            if(!xnb->is_compressed())
-            {
-                ImGui::Separator();
+            ImGui::Separator();
 
+            if(auto reader = xnb->primary_object())
+            {
+                ImGui::Text("[hover for reader]");
+                if(ImGui::IsItemHovered())
+                    ImGui::SetTooltip("%s", reader->reader().c_str());
+            }
+            else
+            {
+                ImGui::Text("No primary object");
             }
         }
         ImGui::End();

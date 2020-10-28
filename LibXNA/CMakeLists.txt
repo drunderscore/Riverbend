@@ -17,9 +17,7 @@ add_library(LibXNA STATIC
     Compress/Context.h
 
     TypeReaders/Reader.h
-    TypeReaders/Reader.cpp
     TypeReaders/Texture2DReader.h
-    TypeReaders/Texture2DReader.cpp
     )
 
 target_include_directories(LibXNA PUBLIC .)

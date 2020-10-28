@@ -24,9 +24,18 @@ namespace LibXNA
                 xnb.m_type_readers.push_back(stream);
 
             xnb.m_shared_resource_count = stream.read_7bit_encoded_int();
+            xnb.m_primary_object_typeid = stream.read_7bit_encoded_int();
         }
 
         return xnb;
+    }
+
+    const std::optional<XNB::TypeReader> XNB::primary_object() const
+    {
+        if(m_primary_object_typeid == 0)
+            return {};
+
+        return m_type_readers[m_primary_object_typeid - 1];
     }
 
     XNB::TypeReader::TypeReader(Stream& stream)
