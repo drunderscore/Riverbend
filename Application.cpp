@@ -9,11 +9,8 @@
 #include "LibXNA/TypeReaders/Texture2DReader.h"
 #include "LibXNA/Stream.h"
 #include <filesystem>
-#include "ImGuiWindows/ActionBar.h"
-#include "ImGuiWindows/FilePicker.h"
 #include "Result.h"
 #include <sstream>
-#include "ImGuiWindows/PropertiesPanel.h"
 
 u32 Application::start()
 {
@@ -60,7 +57,7 @@ u32 Application::start()
     while(!m_closing)
     {
         poll();
-        render();
+        draw();
     }
 
     ImGui_ImplOpenGL3_Shutdown();
@@ -105,10 +102,10 @@ void Application::load_file(std::filesystem::path path)
     if(xnb->is_compressed())
         show_dialog("XNB is compressed", "This XNB file is compressed. You can view basic information, but there is currently no support for viewing this data.");
 
-    m_loaded_xnb = *xnb;
+    m_loaded_xnb = std::make_shared<LibXNA::XNB>(*xnb);
 }
 
-void Application::render()
+void Application::draw()
 {
     auto io = ImGui::GetIO();
 
@@ -116,11 +113,14 @@ void Application::render()
     ImGui_ImplSDL2_NewFrame(m_window);
     ImGui::NewFrame();
 
+#ifdef _DEBUG
     ImGui::ShowDemoWindow();
+#endif
 
-    ActionBar::draw(*this);
-    FilePicker::draw(*this);
-    PropertiesPanel::draw(*this);
+    draw_viewport();
+    draw_action_bar();
+    draw_properties();
+    m_file_picker.draw();
 
     for(auto it = m_dialogs.begin(); it != m_dialogs.end();)
     {
@@ -155,4 +155,78 @@ void Application::render()
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(m_window);
+}
+
+void Application::draw_viewport()
+{
+
+}
+
+void Application::draw_action_bar()
+{
+    if(ImGui::BeginMainMenuBar())
+    {
+        if(ImGui::BeginMenu("File"))
+        {
+            if(ImGui::MenuItem("Open"))
+            {
+                m_file_picker.open([&](auto path)
+                {
+                    load_file(path);
+                    m_file_picker.close();
+                });
+            }
+
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+}
+
+void Application::draw_properties()
+{
+    if(auto xnb = loaded_xnb())
+    {
+        if(ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            if(ImGui::BeginTable("PropertiesTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingPolicyFixedX))
+            {
+                auto insert_key_value = [](const char* key, const char* specifier, auto val)
+                {
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s", key);
+                    ImGui::TableNextColumn();
+                    ImGui::Text(specifier, val);
+                };
+
+                insert_key_value("Target Platform", "%s", LibXNA::get_target_platform_name(xnb->header().m_target_platform));
+                insert_key_value("Format Version", "%d", xnb->header().m_format_version);
+
+                std::stringstream flags_text;
+                if(xnb->is_hi_def())
+                    flags_text << "Hi-Def";
+                if(xnb->is_compressed())
+                {
+                    if(xnb->is_hi_def())
+                        flags_text << ", ";
+                    flags_text << "Compressed";
+                }
+                insert_key_value("Flags", "%s", flags_text.str().c_str());
+
+                insert_key_value("Total Size", "%d", xnb->header().m_total_size);
+                if(auto decompressed_size = xnb->decompressed_size())
+                    insert_key_value("Decompressed Size", "%d", *decompressed_size);
+
+                ImGui::EndTable();
+            }
+
+            if(!xnb->is_compressed())
+            {
+                ImGui::Separator();
+
+            }
+        }
+        ImGui::End();
+    }
 }

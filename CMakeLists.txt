@@ -36,12 +36,8 @@ add_executable(Riverbend
     GL/glcorearb.h
     Texture.cpp
     Texture.h
-    ImGuiWindows/FilePicker.h
-    ImGuiWindows/FilePicker.cpp
-    ImGuiWindows/ActionBar.h
-    ImGuiWindows/ActionBar.cpp
-    ImGuiWindows/PropertiesPanel.h
-    ImGuiWindows/PropertiesPanel.cpp
+    FilePicker.h
+    FilePicker.cpp
     ${IMGUI_FILES}
     )
 

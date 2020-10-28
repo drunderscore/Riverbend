@@ -5,16 +5,6 @@
 #include <sstream>
 #include "loguru/loguru.hpp"
 
-std::vector<std::string> list_root_paths();
-char FilePicker::m_path_input[512] = "";
-std::vector<std::string> FilePicker::m_roots = list_root_paths();
-
-std::function<void(std::filesystem::path)> FilePicker::m_callback;
-std::vector<std::filesystem::directory_entry> FilePicker::m_listed_paths;
-ImGuiTextFilter FilePicker::m_filter;
-bool FilePicker::m_open = false;
-bool FilePicker::m_should_open = false;
-
 std::vector<std::string> list_root_paths()
 {
 #ifdef _WIN32
@@ -45,6 +35,11 @@ std::vector<std::string> list_root_paths()
 #else
 #error Must define platform-specific root path listing!
 #endif // _WIN32
+}
+
+FilePicker::FilePicker(std::string name) : m_name(name)
+{
+    m_roots = list_root_paths();
 }
 
 void FilePicker::open(std::function<void(std::filesystem::path)> cb)
@@ -81,19 +76,17 @@ void FilePicker::update_listing(std::filesystem::path path, bool update_input)
         strcpy_s(m_path_input, path.string().c_str());
 }
 
-void FilePicker::draw(Application&)
+void FilePicker::draw()
 {
-    constexpr const char* FILE_PICKER_NAME = "Select a file";
-
     if(m_should_open)
     {
         m_should_open = false;
-        ImGui::OpenPopup(FILE_PICKER_NAME);
+        ImGui::OpenPopup(m_name.c_str());
         m_open = true;
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(450, 250));
-    if(ImGui::BeginPopupModal(FILE_PICKER_NAME, &m_open))
+    if(ImGui::BeginPopupModal(m_name.c_str(), &m_open))
     {
         ImGui::PopStyleVar();
         if(ImGui::InputText("Path", m_path_input, sizeof(m_path_input), ImGuiInputTextFlags_EnterReturnsTrue))
