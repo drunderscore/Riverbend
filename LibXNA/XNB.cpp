@@ -21,7 +21,10 @@ namespace LibXNA
         {
             auto type_reader_count = stream.read_7bit_encoded_int();
             for(int i = 0; i < type_reader_count; i++)
-                xnb.m_type_readers.push_back(stream);
+            {
+                if(auto reader = TypeReader::parse(stream))
+                    xnb.m_type_readers.push_back(*reader);
+            }
 
             xnb.m_shared_resource_count = stream.read_7bit_encoded_int();
             xnb.m_primary_object_typeid = stream.read_7bit_encoded_int();
@@ -38,9 +41,16 @@ namespace LibXNA
         return m_type_readers[m_primary_object_typeid - 1];
     }
 
-    XNB::TypeReader::TypeReader(Stream& stream)
+    Result<XNB::TypeReader> XNB::TypeReader::parse(Stream& stream)
     {
-        m_reader = stream.read_string();
-        stream.read(m_version);
+        auto type_name = FullyQualifiedType::parse(stream.read_string());
+        auto version = stream.read<int>();
+        // TODO: result stack (put this result inside another result)
+        if(!type_name)
+            return type_name.error();
+
+        TypeReader ret(*type_name);
+        ret.m_version = version;
+        return ret;
     }
 }

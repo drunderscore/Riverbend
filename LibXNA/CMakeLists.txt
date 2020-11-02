@@ -18,6 +18,11 @@ add_library(LibXNA STATIC
 
     TypeReaders/Reader.h
     TypeReaders/Texture2DReader.h
+
+    FullyQualifiedType.h
+    FullyQualifiedType.cpp
+    Parser.h
+    Parser.cpp
     )
 
 target_include_directories(LibXNA PUBLIC .)

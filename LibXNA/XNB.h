@@ -6,6 +6,7 @@
 #include <vector>
 #include "Stream.h"
 #include "Result.h"
+#include "FullyQualifiedType.h"
 
 namespace LibXNA
 {
@@ -56,12 +57,12 @@ namespace LibXNA
         class TypeReader
         {
         public:
-            TypeReader(Stream& stream);
-
-            const std::string reader() const { return m_reader; }
+            static Result<TypeReader> parse(Stream&);
+            FullyQualifiedType& reader() { return m_reader; }
             int version(){ return m_version; }
         private:
-            std::string m_reader;
+            TypeReader(FullyQualifiedType reader) : m_reader(reader) {}
+            FullyQualifiedType m_reader;
             int m_version;
         };
 

@@ -218,20 +218,11 @@ void Application::draw_properties()
                 if(auto decompressed_size = xnb->decompressed_size())
                     insert_key_value("Decompressed Size", "%d", *decompressed_size);
 
+                // TODO: include fully qualified
+                if(auto reader = xnb->primary_object())
+                    insert_key_value("Type Reader", "%s", reader->reader().class_name().c_str());
+
                 ImGui::EndTable();
-            }
-
-            ImGui::Separator();
-
-            if(auto reader = xnb->primary_object())
-            {
-                ImGui::Text("[hover for reader]");
-                if(ImGui::IsItemHovered())
-                    ImGui::SetTooltip("%s", reader->reader().c_str());
-            }
-            else
-            {
-                ImGui::Text("No primary object");
             }
         }
         ImGui::End();
