@@ -7,6 +7,7 @@
 #include "Stream.h"
 #include "Result.h"
 #include "FullyQualifiedType.h"
+#include "DataSize.h"
 
 namespace LibXNA
 {
@@ -69,8 +70,13 @@ namespace LibXNA
         static Result<XNB> parse(std::istream&);
         const std::vector<TypeReader> type_readers() const { return m_type_readers; }
         const Header& header() const { return m_header; }
-        std::optional<u32> decompressed_size() { return m_decompressed_size; }
+        std::optional<DataSize> decompressed_size() { return m_decompressed_size; }
         const std::optional<TypeReader> primary_object() const;
+
+        DataSize total_size()
+        {
+            return m_header.m_total_size;
+        }
 
         bool is_compressed()
         {
@@ -84,7 +90,7 @@ namespace LibXNA
 
     private:
         Header m_header;
-        std::optional<u32> m_decompressed_size;
+        std::optional<DataSize> m_decompressed_size;
         std::vector<TypeReader> m_type_readers;
         u32 m_shared_resource_count = 0;
         u32 m_primary_object_typeid = 0;

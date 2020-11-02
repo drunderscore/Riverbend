@@ -16,7 +16,7 @@ namespace LibXNA
 
         // TODO: Support compressed XNB format
         if(xnb.is_compressed())
-            stream.read(xnb.m_decompressed_size);
+            xnb.m_decompressed_size = stream.read<u32>();
         else
         {
             auto type_reader_count = stream.read_7bit_encoded_int();

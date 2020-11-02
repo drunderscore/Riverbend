@@ -214,9 +214,9 @@ void Application::draw_properties()
                 }
                 insert_key_value("Flags", "%s", flags_text.str().c_str());
 
-                insert_key_value("Total Size", "%d", xnb->header().m_total_size);
+                insert_key_value("Total Size", "%s", xnb->total_size().display_most_fitting().c_str());
                 if(auto decompressed_size = xnb->decompressed_size())
-                    insert_key_value("Decompressed Size", "%d", *decompressed_size);
+                    insert_key_value("Decompressed Size", "%d", decompressed_size->size());
 
                 // TODO: include fully qualified
                 if(auto reader = xnb->primary_object())

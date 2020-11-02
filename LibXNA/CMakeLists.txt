@@ -23,6 +23,8 @@ add_library(LibXNA STATIC
     FullyQualifiedType.cpp
     Parser.h
     Parser.cpp
+    DataSize.h
+    DataSize.cpp
     )
 
 target_include_directories(LibXNA PUBLIC .)
