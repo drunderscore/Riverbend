@@ -5,6 +5,9 @@ This project comes in two parts:
 - `LibXNA`: Abstract library to help parse XNA file formats (primarily XNB)
 - `Riverbend`: Graphical interface to use LibXNA
 
+This project is licensed under the GNU GPL Version 3. Code was written by whomever is stated in the file.  
+The `resources` directory and contents is **NOT** licensed under GNU GPL Version 3.
+
 ## Build
 Simply run `cmake`. I personally use Ninja, but you can use Visual Studio in just the same way.
 
