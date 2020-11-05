@@ -4,6 +4,7 @@
 
 namespace LibXNA
 {
+    // TODO: Improve performance of this data by caching some values
     class DataSize
     {
     public:

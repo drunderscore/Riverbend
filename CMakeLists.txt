@@ -38,6 +38,10 @@ add_executable(Riverbend
     Texture.h
     FilePicker.h
     FilePicker.cpp
+    Viewport.h
+    Viewport.cpp
+    TextureViewport.h
+    TextureViewport.cpp
     ${IMGUI_FILES}
     )
 

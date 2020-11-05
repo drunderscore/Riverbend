@@ -11,6 +11,8 @@
 #include <filesystem>
 #include "Result.h"
 #include <sstream>
+#include "Viewport.h"
+#include "TextureViewport.h"
 
 u32 Application::start()
 {
@@ -51,7 +53,7 @@ u32 Application::start()
     ImGui_ImplOpenGL3_Init(glsl_version);
 
 #ifdef _DEBUG
-    load_file("test.xnb");
+    load_file("test_mipped.xnb");
 #endif
 
     while(!m_closing)
@@ -76,6 +78,9 @@ void Application::poll()
     while (SDL_PollEvent(&e))
     {
         ImGui_ImplSDL2_ProcessEvent(&e);
+        if(m_viewport)
+            m_viewport->poll(e);
+
         if (e.type == SDL_QUIT)
             m_closing = true;
     }
@@ -101,10 +106,36 @@ void Application::load_file(std::filesystem::path path)
         return;
     }
 
+    m_loaded_xnb = std::make_shared<LibXNA::XNB>(*xnb);
+
+    auto created_viewport = false;
     if(xnb->is_compressed())
         show_dialog("XNB is compressed", "This XNB file is compressed. You can view basic information, but there is currently no support for viewing this data.");
+    else
+    {
+        if(auto primary = xnb->primary_object())
+        {
+            // TODO: Decide what reader to load inside of LibXNA
+            // TODO: Load off render thread, and display loading
+            if(primary->reader().type_name() == LibXNA::Texture2DReader::type_name())
+            {
+                m_loaded_reader = std::make_shared<LibXNA::Texture2DReader>(stream);
+                created_viewport = true;
+                m_viewport = std::make_shared<TextureViewport>(*this);
+            }
+            else
+            {
+                show_dialog("Unknown primary object type name", "This type name is unimplemented or unknown, so it cannot be displayed.");
+            }
+        }
+        else
+        {
+            show_dialog("No primary object", "This XNB does not have any primary object, so it cannot be displayed.");
+        }
+    }
 
-    m_loaded_xnb = std::make_shared<LibXNA::XNB>(*xnb);
+    if(!created_viewport)
+        m_viewport = std::make_shared<Viewport>(*this);
 }
 
 void Application::draw()
@@ -119,10 +150,10 @@ void Application::draw()
     ImGui::ShowDemoWindow();
 #endif
 
-    draw_viewport();
     draw_action_bar();
-    draw_properties();
     m_file_picker.draw();
+    if(m_viewport)
+        m_viewport->draw();
 
     for(auto it = m_dialogs.begin(); it != m_dialogs.end();)
     {
@@ -159,11 +190,6 @@ void Application::draw()
     SDL_GL_SwapWindow(m_window);
 }
 
-void Application::draw_viewport()
-{
-
-}
-
 void Application::draw_action_bar()
 {
     if(ImGui::BeginMainMenuBar())
@@ -181,52 +207,7 @@ void Application::draw_action_bar()
 
             ImGui::EndMenu();
         }
+
         ImGui::EndMainMenuBar();
-    }
-}
-
-void Application::draw_properties()
-{
-    if(auto xnb = loaded_xnb())
-    {
-        if(ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-        {
-            if(ImGui::BeginTable("PropertiesTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingPolicyFixedX))
-            {
-                auto insert_key_value = [](const char* key, const char* specifier, auto val)
-                {
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    ImGui::Text("%s", key);
-                    ImGui::TableNextColumn();
-                    ImGui::Text(specifier, val);
-                };
-
-                insert_key_value("Target Platform", "%s", LibXNA::get_target_platform_name(xnb->header().m_target_platform));
-                insert_key_value("Format Version", "%d", xnb->header().m_format_version);
-
-                std::stringstream flags_text;
-                if(xnb->is_hi_def())
-                    flags_text << "Hi-Def";
-                if(xnb->is_compressed())
-                {
-                    if(xnb->is_hi_def())
-                        flags_text << ", ";
-                    flags_text << "Compressed";
-                }
-                insert_key_value("Flags", "%s", flags_text.str().c_str());
-
-                insert_key_value("Total Size", "%s", xnb->total_size().display_most_fitting().c_str());
-                if(auto decompressed_size = xnb->decompressed_size())
-                    insert_key_value("Decompressed Size", "%d", decompressed_size->size());
-
-                // TODO: include fully qualified
-                if(auto reader = xnb->primary_object())
-                    insert_key_value("Type Reader", "%s", reader->reader().class_name().c_str());
-
-                ImGui::EndTable();
-            }
-        }
-        ImGui::End();
     }
 }

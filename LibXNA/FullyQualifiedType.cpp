@@ -45,4 +45,14 @@ namespace LibXNA
         fully_qualified.m_class_name = buffer.str();
         return fully_qualified;
     }
+
+    std::string FullyQualifiedType::type_name()
+    {
+        std::stringstream buffer;
+        for(auto& str : m_namespace)
+            buffer << str << '.';
+        buffer << m_class_name;
+
+        return buffer.str();
+    }
 }

@@ -14,6 +14,7 @@ namespace LibXNA
         // TODO: rename this to something better.
         const std::vector<std::string>& namespaze() { return m_namespace; }
         std::string& class_name() { return m_class_name; }
+        std::string type_name();
     private:
         FullyQualifiedType() {}
 
