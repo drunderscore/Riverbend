@@ -4,8 +4,8 @@ Texture::Texture(const u8* data, u32 width, u32 height, Format fmt , Type t, u32
 {
     glGenTextures(count, &m_id);
     glBindTexture(GL_TEXTURE_2D, m_id);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(fmt), width, height, 0, static_cast<GLenum>(fmt), static_cast<GLenum>(t), data);
 }
 

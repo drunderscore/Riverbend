@@ -24,6 +24,26 @@ public:
     Texture(const u8* data, u32 width, u32 height, Format fmt = Format::RGBA, Type t = Type::UnsignedByte, u32 count = 1);
     ~Texture();
 
+    bool operator==(const Texture &b) const
+    {
+        return m_id == b.m_id;
+    }
+
+    bool operator!=(const Texture &b) const
+    {
+        return !(m_id == b.m_id);
+    }
+
+    bool operator>(const Texture &b) const
+    {
+        return m_id > b.m_id;
+    }
+
+    bool operator<(const Texture &b) const
+    {
+        return b.m_id > m_id;
+    }
+
     u32 width() { return m_width; }
     u32 height() { return m_height; }
     GLuint id() { return m_id; }
