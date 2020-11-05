@@ -67,7 +67,7 @@ namespace LibXNA
             int m_version;
         };
 
-        static Result<XNB> parse(std::istream&);
+        static Result<XNB> parse(Stream&);
         const std::vector<TypeReader> type_readers() const { return m_type_readers; }
         const Header& header() const { return m_header; }
         std::optional<DataSize> decompressed_size() { return m_decompressed_size; }

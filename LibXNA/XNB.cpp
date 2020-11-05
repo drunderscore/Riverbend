@@ -3,12 +3,11 @@
 
 namespace LibXNA
 {
-    Result<XNB> XNB::parse(std::istream& native_stream)
+    Result<XNB> XNB::parse(Stream& stream)
     {
         constexpr static char XNB_MAGIC[] = "XNB";
         XNB xnb;
 
-        Stream stream = native_stream;
         stream.read(xnb.m_header);
 
         if(memcmp(XNB_MAGIC, xnb.m_header.m_magic, 3) != 0)

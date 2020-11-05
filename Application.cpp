@@ -83,14 +83,16 @@ void Application::poll()
 
 void Application::load_file(std::filesystem::path path)
 {
-    std::ifstream file_stream(path);
+    std::ifstream file_stream(path, std::ios::binary);
+    LibXNA::Stream stream(file_stream);
+
     if(!file_stream.good())
     {
         show_dialog("Could not read file", "The file could not be read.");
         return;
     }
 
-    auto xnb = LibXNA::XNB::parse(file_stream);
+    auto xnb = LibXNA::XNB::parse(stream);
     if(!xnb)
     {
         std::stringstream error_text;
