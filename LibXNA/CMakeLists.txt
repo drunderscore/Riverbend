@@ -18,6 +18,8 @@ add_library(LibXNA STATIC
 
     TypeReaders/Reader.h
     TypeReaders/Texture2DReader.h
+    TypeReaders/SurfaceFormat.h
+    TypeReaders/SurfaceFormat.cpp
 
     FullyQualifiedType.h
     FullyQualifiedType.cpp

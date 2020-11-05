@@ -26,4 +26,10 @@ namespace LibXNA
         HalfVector4,
         HdrBlendable
     };
+
+    // Direct translation from the above enum
+    const char* get_surface_format_name(SurfaceFormat fmt);
+
+    // Describes how the memory would represent the data in this format
+    const char* get_surface_format_description(SurfaceFormat fmt);
 }
