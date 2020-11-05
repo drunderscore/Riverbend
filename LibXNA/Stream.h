@@ -107,7 +107,7 @@ namespace LibXNA
             return result;
         }
 
-    public:
+    private:
         u32 m_index = 0;
         u8* m_data;
         std::streamsize m_size;
