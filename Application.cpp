@@ -29,6 +29,7 @@
 #include <sstream>
 #include "Viewport.h"
 #include "TextureViewport.h"
+#include "Build.h"
 
 u32 Application::start()
 {
@@ -52,7 +53,7 @@ u32 Application::start()
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-    CHECK_F((m_window = SDL_CreateWindow("Riverbend", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720,
+    CHECK_F((m_window = SDL_CreateWindow(get_build_title(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720,
                                  SDL_WindowFlags::SDL_WINDOW_OPENGL | SDL_WindowFlags::SDL_WINDOW_RESIZABLE |
                                  SDL_WindowFlags::SDL_WINDOW_ALLOW_HIGHDPI )) != nullptr, "Unable to create SDL window");
 
@@ -170,6 +171,7 @@ void Application::draw()
     m_file_picker.draw();
     if(m_viewport)
         m_viewport->draw();
+    draw_action_bar(true);
 
     for(auto it = m_dialogs.begin(); it != m_dialogs.end();)
     {
@@ -206,24 +208,38 @@ void Application::draw()
     SDL_GL_SwapWindow(m_window);
 }
 
-void Application::draw_action_bar()
+void Application::draw_action_bar(bool post)
 {
     if(ImGui::BeginMainMenuBar())
     {
-        if(ImGui::BeginMenu("File"))
+        if(post)
         {
-            if(ImGui::MenuItem("Open"))
+            if(ImGui::BeginMenu("About"))
             {
-                m_file_picker.open([&](auto path)
-                {
-                    load_file(path);
-                    m_file_picker.close();
-                });
+                ImGui::Text("Licensed under GNU GPL Version 3");
+                ImGui::Text("Written and open sourced by James Puleo");
+
+                if(ImGui::MenuItem("Copy Information"))
+                    ImGui::SetClipboardText(get_build_title());
+                ImGui::EndMenu();
             }
-
-            ImGui::EndMenu();
         }
+        else
+        {
+            if(ImGui::BeginMenu("File"))
+            {
+                if(ImGui::MenuItem("Open"))
+                {
+                    m_file_picker.open([&](auto path)
+                    {
+                        load_file(path);
+                        m_file_picker.close();
+                    });
+                }
 
+                ImGui::EndMenu();
+            }
+        }
         ImGui::EndMainMenuBar();
     }
 }

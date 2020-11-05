@@ -57,7 +57,7 @@ public:
 private:
     void poll();
     void draw();
-    void draw_action_bar();
+    void draw_action_bar(bool post = false);
 
     SDL_Window *m_window = nullptr;
     SDL_GLContext m_gl_context = nullptr;
