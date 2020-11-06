@@ -24,7 +24,7 @@ set(IMGUI_FILES
     imgui/imstb_truetype.h
     )
 
-add_executable(Riverbend
+add_executable(Riverbend WIN32
     Main.cpp
     Application.cpp
     Application.h

@@ -21,8 +21,9 @@
 #include "NativeMessageBox.h"
 #include "SDL.h"
 #include "LibXNA/Compress/XCompress.h"
+#include <Windows.h>
 
-int main()
+int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 #ifndef _DEBUG
     try
