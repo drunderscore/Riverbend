@@ -64,7 +64,7 @@ void Viewport::draw_properties()
 
     insert_key_value("Total Size", "%s", xnb->total_size().display_most_fitting().c_str());
     if(auto decompressed_size = xnb->decompressed_size())
-        insert_key_value("Decompressed Size", "%d", decompressed_size->size());
+        insert_key_value("Decompressed Size", "%s", decompressed_size->display_most_fitting().c_str());
 
     // TODO: include fully qualified
     if(auto reader = xnb->primary_object())
