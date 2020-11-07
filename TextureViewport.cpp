@@ -22,11 +22,14 @@ TextureViewport::TextureViewport(Application& app) : Viewport(app)
 {
     auto texture_reader = dynamic_cast<LibXNA::Texture2DReader*>(app.loaded_reader().get());
     CHECK_F(texture_reader != nullptr, "Couldn't get Texture2DReader from application");
+
+    auto type = app.loaded_xnb()->header().m_target_platform == LibXNA::TargetPlatform::Xbox ? Texture::Type::UnsignedInt8 : Texture::Type::UnsignedInt8Reverse;
     for(auto &kv : texture_reader->data())
     {
         u32 width_scale = kv.first == 0 ? 1 : std::pow(2, kv.first);
         u32 height_scale = kv.first == 0 ? 1 : std::pow(2, kv.first);
-        m_textures.emplace(kv.first, std::make_shared<Texture>(kv.second.data(), texture_reader->width() / width_scale, texture_reader->height() / height_scale));
+        m_textures.emplace(kv.first, std::make_shared<Texture>(kv.second.data(), texture_reader->width() / width_scale, texture_reader->height() / height_scale,
+                                                               Texture::Format::RGBA, type));
         m_rendered_levels.emplace(kv.first, kv.first == 0);
     }
 }

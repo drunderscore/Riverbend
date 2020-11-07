@@ -34,6 +34,8 @@ public:
         UnsignedByte = GL_UNSIGNED_BYTE,
         Byte = GL_BYTE,
         UnsignedInt = GL_UNSIGNED_INT,
+        UnsignedInt8Reverse = GL_UNSIGNED_INT_8_8_8_8_REV,
+        UnsignedInt8 = GL_UNSIGNED_INT_8_8_8_8,
         Int = GL_INT
     };
 
