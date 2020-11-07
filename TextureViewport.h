@@ -30,4 +30,6 @@ protected:
 
     std::map<u32, bool> m_rendered_levels;
     std::map<u32, std::shared_ptr<Texture>> m_textures;
+    bool m_show_outline = false;
+    u32 m_outline_color = 0xFFFF00FF;
 };

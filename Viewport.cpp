@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #define NOMINMAX
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "Viewport.h"
 #include "imgui/imgui.h"
 #include <sstream>
@@ -104,7 +105,12 @@ void Viewport::poll(SDL_Event& e)
 
 void Viewport::draw_texture(Texture& t, ImVec2& pos)
 {
-    auto min = ImVec2(pos.x + m_offset.x, pos.y + m_offset.y);
-    auto max = ImVec2(((pos.x + t.width()) * m_scale) + m_offset.x, ((pos.y + t.height()) * m_scale) + m_offset.y);
+    auto min = pos + m_offset;
+    auto max = (pos + ImVec2(t.width(), t.height()) * m_scale) + m_offset;
     ImGui::GetBackgroundDrawList()->AddImage(reinterpret_cast<void*>(t.id()), min, max);
+}
+
+void Viewport::draw_rect(ImVec2& pos, ImVec2& size, u32 col, float thick)
+{
+    ImGui::GetBackgroundDrawList()->AddRect(pos + m_offset, (pos + size * m_scale) + m_offset, col, 0.0f, ImDrawCornerFlags_All, thick);
 }

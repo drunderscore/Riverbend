@@ -41,7 +41,15 @@ void TextureViewport::draw_viewport()
     for(auto i = 0u; i < m_textures.size(); i++)
     {
         if(m_rendered_levels.at(i))
-            draw_texture(*m_textures.at(i), pos);
+        {
+            auto tex = m_textures.at(i);
+            draw_texture(*tex, pos);
+            if(m_show_outline)
+            {
+                auto size = ImVec2(tex->width(), tex->height());
+                draw_rect(pos, size, m_outline_color, 1.0f);
+            }
+        }
     }
 }
 
@@ -68,6 +76,8 @@ void TextureViewport::draw_action_bar()
 
             ImGui::EndMenu();
         }
+
+        ImGui::MenuItem("Show Outline", nullptr, &m_show_outline);
         ImGui::EndMenu();
     }
 }

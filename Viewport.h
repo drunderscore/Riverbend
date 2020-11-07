@@ -22,6 +22,7 @@
 #include "LibXNA/XNB.h"
 #include "LibXNA/TypeReaders/Reader.h"
 
+// TODO: Add translation method helpers for offset and scale
 class Viewport
 {
 public:
@@ -51,6 +52,7 @@ protected:
     virtual void draw_action_bar();
 
     virtual void draw_texture(Texture&, ImVec2& pos);
+    virtual void draw_rect(ImVec2& pos, ImVec2& size, u32 col, float thick = 1.0f);
     ImVec2 m_offset;
     float m_scale = 1.0f;
     Application& m_app;
