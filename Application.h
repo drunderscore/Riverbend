@@ -47,7 +47,7 @@ public:
         std::string m_text;
     };
 
-    Application() : m_file_picker("Select a file") {}
+    Application() {}
     u32 start();
     void show_dialog(std::string name, std::string text) { m_dialogs.push_back(Dialog(name, text)); }
     void load_file(std::filesystem::path);
@@ -66,5 +66,4 @@ private:
     std::shared_ptr<LibXNA::XNB> m_loaded_xnb;
     std::shared_ptr<LibXNA::Reader> m_loaded_reader;
     std::shared_ptr<Viewport> m_viewport;
-    FilePicker m_file_picker;
 };

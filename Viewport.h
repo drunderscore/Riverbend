@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
+#include "imgui/imgui.h"
 #include "Application.h"
 #include "SDL.h"
 #include "Texture.h"

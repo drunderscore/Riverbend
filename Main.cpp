@@ -22,6 +22,7 @@
 #include "SDL.h"
 #include "LibXNA/Compress/XCompress.h"
 #include <Windows.h>
+#include <ShObjIdl.h>
 
 int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -39,10 +40,14 @@ int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         });
 
         CHECK_F(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0, "SDL failed to initialize: %s", SDL_GetError());
+        CHECK_F(SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED | COINIT_DISABLE_OLE1DDE)), "COM failed to initialize");
 
         Application app;
 
-        return app.start();
+        auto ret = app.start();
+        CoUninitialize();
+
+        return ret;
 #ifndef _DEBUG
     }
     catch(const std::exception& e)

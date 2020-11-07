@@ -30,6 +30,7 @@
 #include "Viewport.h"
 #include "TextureViewport.h"
 #include "Build.h"
+#include <optional>
 
 u32 Application::start()
 {
@@ -168,7 +169,6 @@ void Application::draw()
 #endif
 
     draw_action_bar();
-    m_file_picker.draw();
     if(m_viewport)
         m_viewport->draw();
     draw_action_bar(true);
@@ -230,11 +230,9 @@ void Application::draw_action_bar(bool post)
             {
                 if(ImGui::MenuItem("Open"))
                 {
-                    m_file_picker.open([&](auto path)
-                    {
-                        load_file(path);
-                        m_file_picker.close();
-                    });
+                    // TODO: we're on the wrong thread!
+                    if(auto path = FilePicker::open())
+                        load_file(*path);
                 }
 
                 ImGui::EndMenu();
