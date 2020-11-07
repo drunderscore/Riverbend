@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#define NOMINMAX
 #include "Viewport.h"
 #include "imgui/imgui.h"
 #include <sstream>
@@ -43,7 +44,18 @@ void Viewport::draw()
 
 void Viewport::draw_viewport() {}
 
-void Viewport::draw_action_bar() {}
+void Viewport::draw_action_bar()
+{
+    if(ImGui::BeginMenu("View"))
+    {
+        ImGui::SetNextItemWidth(150.0f);
+        ImGui::SliderFloat("Scale", &m_scale, 0.25f, 20.0f);
+        if(ImGui::MenuItem("Re-center"))
+            m_offset = ImVec2();
+
+        ImGui::EndMenu();
+    }
+}
 
 void Viewport::draw_properties()
 {
@@ -87,12 +99,12 @@ void Viewport::poll(SDL_Event& e)
     }
 
     if(e.type == SDL_MOUSEWHEEL)
-        m_scale += e.wheel.y * 10.0f;
+        m_scale = std::max(0.25f, m_scale + (e.wheel.y * 0.125f));
 }
 
 void Viewport::draw_texture(Texture& t, ImVec2& pos)
 {
     auto min = ImVec2(pos.x + m_offset.x, pos.y + m_offset.y);
-    auto max = ImVec2(pos.x + t.width() + m_offset.x + m_scale, pos.y + t.height() + m_offset.y + m_scale);
+    auto max = ImVec2(((pos.x + t.width()) * m_scale) + m_offset.x, ((pos.y + t.height()) * m_scale) + m_offset.y);
     ImGui::GetBackgroundDrawList()->AddImage(reinterpret_cast<void*>(t.id()), min, max);
 }
