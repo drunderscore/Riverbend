@@ -17,13 +17,12 @@
 #pragma once
 #include <optional>
 #include <istream>
-#include "Types.h"
+#include <LibFruit/Fruit.h>
+#include <LibFruit/Data/Stream.h>
+#include <LibFruit/Data/DataSize.h>
 #include <memory>
 #include <vector>
-#include "Stream.h"
-#include "Result.h"
 #include "FullyQualifiedType.h"
-#include "DataSize.h"
 
 namespace LibXNA
 {
@@ -74,7 +73,7 @@ namespace LibXNA
         class TypeReader
         {
         public:
-            static Result<TypeReader> parse(Stream&);
+            static Result<TypeReader> parse(LibFruit::Stream&);
             FullyQualifiedType& reader() { return m_reader; }
             int version(){ return m_version; }
         private:
@@ -83,13 +82,13 @@ namespace LibXNA
             int m_version;
         };
 
-        static Result<XNB> parse(Stream&);
+        static Result<XNB> parse(LibFruit::Stream&);
         const std::vector<TypeReader> type_readers() const { return m_type_readers; }
         const Header& header() const { return m_header; }
-        std::optional<DataSize> decompressed_size() { return m_decompressed_size; }
+        std::optional<LibFruit::DataSize> decompressed_size() { return m_decompressed_size; }
         const std::optional<TypeReader> primary_object() const;
 
-        DataSize total_size()
+        LibFruit::DataSize total_size()
         {
             return m_header.m_total_size;
         }
@@ -106,7 +105,7 @@ namespace LibXNA
 
     private:
         Header m_header;
-        std::optional<DataSize> m_decompressed_size;
+        std::optional<LibFruit::DataSize> m_decompressed_size;
         std::vector<TypeReader> m_type_readers;
         u32 m_shared_resource_count = 0;
         u32 m_primary_object_typeid = 0;

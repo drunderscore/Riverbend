@@ -15,8 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "Types.h"
-#include "Result.h"
+#include <LibFruit/Fruit.h>
 #include <string>
 #include <vector>
 

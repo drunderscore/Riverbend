@@ -24,7 +24,7 @@ namespace LibXNA
     class Texture2DReader : public TextureReader
     {
     public:
-        Texture2DReader(Stream& stream) : TextureReader(stream)
+        Texture2DReader(LibFruit::Stream& stream) : TextureReader(stream)
         {
             stream.read(m_levels);
             for(auto i = 0u; i < m_levels; i++)

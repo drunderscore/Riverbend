@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "Application.h"
+#include <LibFruit/Fruit.h>
 #include "SDL.h"
 #include "GL/gl3w.h"
 #include "loguru/loguru.hpp"
@@ -23,7 +24,6 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include <fstream>
 #include "LibXNA/TypeReaders/Texture2DReader.h"
-#include "LibXNA/Stream.h"
 #include <filesystem>
 #include "Result.h"
 #include <sstream>
@@ -107,7 +107,7 @@ void Application::poll()
 void Application::load_file(std::filesystem::path path)
 {
     std::ifstream file_stream(path, std::ios::binary);
-    LibXNA::Stream stream(file_stream);
+    LibFruit::Stream stream(file_stream);
 
     if(!file_stream.good())
     {

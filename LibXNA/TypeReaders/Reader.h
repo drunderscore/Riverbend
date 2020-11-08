@@ -15,8 +15,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "Stream.h"
-#include "Types.h"
 
 namespace LibXNA
 {

@@ -15,14 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "FullyQualifiedType.h"
-#include "Parser.h"
+#include <LibFruit/Data/Parser.h>
 #include <sstream>
 
 namespace LibXNA
 {
     Result<FullyQualifiedType> FullyQualifiedType::parse(std::string type)
     {
-        Parser p(type.c_str());
+        LibFruit::Parser p(type.c_str());
         std::stringstream buffer;
         FullyQualifiedType fully_qualified;
 

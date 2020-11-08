@@ -19,7 +19,7 @@
 
 namespace LibXNA
 {
-    Result<XNB> XNB::parse(Stream& stream)
+    Result<XNB> XNB::parse(LibFruit::Stream& stream)
     {
         constexpr static char XNB_MAGIC[] = "XNB";
         XNB xnb;
@@ -56,7 +56,7 @@ namespace LibXNA
         return m_type_readers[m_primary_object_typeid - 1];
     }
 
-    Result<XNB::TypeReader> XNB::TypeReader::parse(Stream& stream)
+    Result<XNB::TypeReader> XNB::TypeReader::parse(LibFruit::Stream& stream)
     {
         auto type_name = FullyQualifiedType::parse(stream.read_string());
         auto version = stream.read<int>();

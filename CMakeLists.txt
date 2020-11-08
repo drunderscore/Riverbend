@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(LibXNA)
+add_subdirectory(LibFruit)
 
 set(IMGUI_FILES
     imgui/imconfig.h
@@ -28,9 +29,6 @@ add_executable(Riverbend WIN32
     Main.cpp
     Application.cpp
     Application.h
-    NativeMessageBox.h
-    NativeMessageBox.cpp
-    loguru/loguru.cpp
     GL/gl3w.c
     GL/gl3w.h
     GL/glcorearb.h
@@ -46,9 +44,11 @@ add_executable(Riverbend WIN32
     )
 
 target_include_directories(Riverbend PUBLIC .)
-target_include_directories(Riverbend PUBLIC "SDL/win/include")
-target_include_directories(Riverbend PUBLIC "LibXNA")
-target_link_directories(Riverbend PUBLIC "SDL/win/lib/x64")
-target_link_directories(Riverbend PUBLIC "build/LibXNA")
-target_link_libraries(Riverbend PUBLIC "SDL2" "OpenGL32" "LibXNA")
+target_include_directories(Riverbend PUBLIC SDL/win/include)
+target_include_directories(Riverbend PUBLIC LibXNA)
+target_include_directories(Riverbend SYSTEM PUBLIC LibFruit)
+target_link_directories(Riverbend PUBLIC SDL/win/lib/x64)
+target_link_directories(Riverbend PUBLIC build/LibXNA)
+target_link_directories(Riverbend PUBLIC LibFruit/build)
+target_link_libraries(Riverbend PUBLIC SDL2 OpenGL32 LibXNA LibFruit)
 target_compile_definitions(Riverbend PUBLIC SDL_MAIN_HANDLED WIN32_LEAN_AND_MEAN IMGUI_IMPL_OPENGL_LOADER_CUSTOM="GL/gl3w.h")

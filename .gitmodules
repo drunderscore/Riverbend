@@ -1,0 +1,3 @@
+[submodule "LibFruit"]
+	path = LibFruit
+	url = https://github.com/drunderscore/LibFruit

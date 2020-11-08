@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
+#include <LibFruit/Data/Stream.h>
 #include "Reader.h"
 #include "SurfaceFormat.h"
 
@@ -23,7 +24,7 @@ namespace LibXNA
     class TextureReader : public Reader
     {
     public:
-        TextureReader(Stream& stream)
+        TextureReader(LibFruit::Stream& stream)
         {
             stream.read(m_format);
             stream.read(m_width);

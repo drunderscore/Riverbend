@@ -8,9 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(LibXNA STATIC
     XNB.h
     XNB.cpp
-    Types.h
-    Stream.h
-    Result.h
 
     Compress/XCompress.h
     Compress/XCompress.cpp
@@ -20,13 +17,16 @@ add_library(LibXNA STATIC
     TypeReaders/Texture2DReader.h
     TypeReaders/SurfaceFormat.h
     TypeReaders/SurfaceFormat.cpp
+    TypeReaders/ModelReader.h
+    TypeReaders/ModelReader.cpp
 
     FullyQualifiedType.h
     FullyQualifiedType.cpp
-    Parser.h
-    Parser.cpp
-    DataSize.h
-    DataSize.cpp
     )
 
+# This is for LibFruit inclusion
+target_include_directories(LibXNA SYSTEM PUBLIC ../)
+
 target_include_directories(LibXNA PUBLIC .)
+target_link_directories(LibXNA PUBLIC ../LibFruit/build)
+target_link_libraries(LibXNA PUBLIC LibFruit)

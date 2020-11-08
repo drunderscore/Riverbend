@@ -18,11 +18,12 @@
 #include <sstream>
 #include "Application.h"
 #include "loguru/loguru.hpp"
-#include "NativeMessageBox.h"
+#include <LibFruit/Graphics/MessageBox.h>
 #include "SDL.h"
 #include "LibXNA/Compress/XCompress.h"
 #include <Windows.h>
 #include <ShObjIdl.h>
+#undef MessageBox
 
 int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -36,7 +37,7 @@ int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         loguru::set_fatal_handler([](const loguru::Message& msg)
         {
-            NativeMessageBox::open("Fatal Error", msg.message, NativeMessageBox::Type::Error, NativeMessageBox::Button::OK);
+            MessageBox::open("Fatal Error", msg.message, MessageBox::Type::Error, MessageBox::Button::OK);
         });
 
         CHECK_F(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0, "SDL failed to initialize: %s", SDL_GetError());
