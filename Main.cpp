@@ -17,7 +17,6 @@
 #include <iostream>
 #include <sstream>
 #include "Application.h"
-#include "loguru/loguru.hpp"
 #include <LibFruit/Graphics/MessageBox.h>
 #include "SDL.h"
 #include "LibXNA/Compress/XCompress.h"
@@ -31,17 +30,8 @@ int main()
     try
     {
 #endif // _DEBUG
-        loguru::g_preamble_uptime = false;
-        loguru::g_preamble_thread = false;
-        loguru::add_file("riverbend.log", loguru::FileMode::Append, loguru::Verbosity_INFO);
-
-        loguru::set_fatal_handler([](const loguru::Message& msg)
-        {
-            MessageBox::open("Fatal Error", msg.message, MessageBox::Type::Error, MessageBox::Button::OK);
-        });
-
-        CHECK_F(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0, "SDL failed to initialize: %s", SDL_GetError());
-        CHECK_F(SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED | COINIT_DISABLE_OLE1DDE)), "COM failed to initialize");
+        CHECK_MSG(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0, "SDL failed to initialize: %s", SDL_GetError());
+        CHECK_MSG(SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED | COINIT_DISABLE_OLE1DDE)), "COM failed to initialize");
 
         Application app;
 
@@ -53,7 +43,7 @@ int main()
     }
     catch(const std::exception& e)
     {
-        ABORT_F("Unhandled exception: %s", e.what());
+        CHECK_MSG(false, "Unhandled exception: %s", e.what());
     }
 #endif // _DEBUG
 }

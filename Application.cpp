@@ -18,7 +18,6 @@
 #include <LibFruit/Fruit.h>
 #include "SDL.h"
 #include "GL/gl3w.h"
-#include "loguru/loguru.hpp"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -54,15 +53,15 @@ u32 Application::start()
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-    CHECK_F((m_window = SDL_CreateWindow(get_build_title(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720,
+    CHECK_MSG((m_window = SDL_CreateWindow(get_build_title(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720,
                                  SDL_WindowFlags::SDL_WINDOW_OPENGL | SDL_WindowFlags::SDL_WINDOW_RESIZABLE |
                                  SDL_WindowFlags::SDL_WINDOW_ALLOW_HIGHDPI )) != nullptr, "Unable to create SDL window");
 
-    CHECK_F((m_gl_context = SDL_GL_CreateContext(m_window)) != nullptr, "Unable to create GL context");
+    CHECK_MSG((m_gl_context = SDL_GL_CreateContext(m_window)) != nullptr, "Unable to create GL context");
     SDL_GL_MakeCurrent(m_window, m_gl_context);
     SDL_GL_SetSwapInterval(0);
 
-    CHECK_F(gl3wInit() == 0, "Unable to initialize GL3W");
+    CHECK_MSG(gl3wInit() == 0, "Unable to initialize GL3W");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

@@ -16,12 +16,11 @@
 
 #include "TextureViewport.h"
 #include <LibXNA/TypeReaders/Texture2DReader.h>
-#include "loguru/loguru.hpp"
 
 TextureViewport::TextureViewport(Application& app) : Viewport(app)
 {
     auto texture_reader = dynamic_cast<LibXNA::Texture2DReader*>(app.loaded_reader().get());
-    CHECK_F(texture_reader != nullptr, "Couldn't get Texture2DReader from application");
+    CHECK_MSG(texture_reader != nullptr, "Couldn't get Texture2DReader from application");
 
     auto type = app.loaded_xnb()->header().m_target_platform == LibXNA::TargetPlatform::Xbox ? Texture::Type::UnsignedInt8 : Texture::Type::UnsignedInt8Reverse;
     for(auto &kv : texture_reader->data())

@@ -36,7 +36,7 @@ std::optional<std::wstring> FilePicker::open()
     if(is_open())
         return {};
 
-    CHECK_F(SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&m_active))), "Failed to create file open dialog");
+    CHECK_MSG(SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&m_active))), "Failed to create file open dialog");
 
     m_active->Show(nullptr);
     IShellItem* item;
