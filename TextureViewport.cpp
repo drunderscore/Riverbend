@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "TextureViewport.h"
-#include "TypeReaders/Texture2DReader.h"
+#include <LibXNA/TypeReaders/Texture2DReader.h>
 #include "loguru/loguru.hpp"
 
 TextureViewport::TextureViewport(Application& app) : Viewport(app)

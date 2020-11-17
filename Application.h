@@ -15,14 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
-#include "Types.h"
+#include <LibFruit/Types.h>
 #include <memory>
 #include <string>
 #include <vector>
 #include <filesystem>
-#include "LibXNA/XNB.h"
+#include <LibXNA/XNB.h>
 #include "FilePicker.h"
-#include "TypeReaders/Reader.h"
+#include <LibXNA/TypeReaders/Reader.h>
 
 class Viewport;
 

@@ -16,7 +16,7 @@
 
 #pragma once
 #include "XCompress.h"
-#include "Types.h"
+#include <LibFruit/Types.h>
 
 namespace LibXNA
 {

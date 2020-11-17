@@ -43,12 +43,8 @@ add_executable(Riverbend
     ${IMGUI_FILES}
     )
 
-target_include_directories(Riverbend PUBLIC .)
+target_include_directories(Riverbend PUBLIC SYSTEM .)
 target_include_directories(Riverbend PUBLIC SDL/win/include)
-target_include_directories(Riverbend PUBLIC LibXNA)
-target_include_directories(Riverbend SYSTEM PUBLIC LibFruit)
-target_link_directories(Riverbend PUBLIC SDL/win/lib/x64)
-target_link_directories(Riverbend PUBLIC build/LibXNA)
-target_link_directories(Riverbend PUBLIC LibFruit/build)
+target_link_directories(Riverbend PUBLIC SDL/win/lib/x64 build/LibXNA build/LibFruit)
 target_link_libraries(Riverbend PUBLIC SDL2 OpenGL32 LibXNA LibFruit)
 target_compile_definitions(Riverbend PUBLIC SDL_MAIN_HANDLED WIN32_LEAN_AND_MEAN IMGUI_IMPL_OPENGL_LOADER_CUSTOM="GL/gl3w.h")

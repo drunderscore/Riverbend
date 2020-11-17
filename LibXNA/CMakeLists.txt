@@ -28,5 +28,5 @@ add_library(LibXNA STATIC
 target_include_directories(LibXNA SYSTEM PUBLIC ../)
 
 target_include_directories(LibXNA PUBLIC .)
-target_link_directories(LibXNA PUBLIC ../LibFruit/build)
+target_link_directories(LibXNA PUBLIC ../build/LibFruit)
 target_link_libraries(LibXNA PUBLIC LibFruit)

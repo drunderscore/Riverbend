@@ -16,12 +16,12 @@
 
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 1337 // TODO: Not have this
 #include "FilePicker.h"
-#include "loguru/loguru.hpp"
 #include <Windows.h>
 #include <ShObjIdl.h>
 #include <thread>
 #include <codecvt>
 #include <locale>
+#include <LibFruit/Log.h>
 
 IFileOpenDialog* FilePicker::m_active = nullptr;
 

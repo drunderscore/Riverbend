@@ -16,7 +16,7 @@
 
 #pragma once
 #include "GL/gl3w.h"
-#include "Types.h"
+#include <LibFruit/Types.h>
 
 class Texture
 {
