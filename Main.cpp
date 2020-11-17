@@ -25,7 +25,7 @@
 #include <ShObjIdl.h>
 #undef MessageBox
 
-int CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+int main()
 {
 #ifndef _DEBUG
     try
