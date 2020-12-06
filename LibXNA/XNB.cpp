@@ -58,7 +58,7 @@ namespace LibXNA
 
     Result<XNB::TypeReader> XNB::TypeReader::parse(LibFruit::Stream& stream)
     {
-        auto type_name = FullyQualifiedType::parse(stream.read_string());
+        auto type_name = FullyQualifiedType::parse(stream.read_csharp_string());
         auto version = stream.read<int>();
         // TODO: result stack (put this result inside another result)
         if(!type_name)
