@@ -49,41 +49,49 @@ namespace LibXNA
 
         static int create_decompression_context(XMEMCODEC_TYPE codec, void* params, int flags, Context ctx)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_create_decompression_context(codec, params, flags, ctx);
         }
 
         static int reset_decompression_context(Context ctx)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_reset_decompression_context(ctx);
         }
 
         static int decompress(Context ctx, u8* dest, int* dest_size, u8* src, int src_size)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_decompress(ctx, dest, dest_size, src, src_size);
         }
 
         static void destroy_decompression_context(Context ctx)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             m_destroy_decompression_context(ctx);
         }
 
         static int create_compression_context(XMEMCODEC_TYPE codec, void* params, int flags, Context ctx)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_create_compression_context(codec, params, flags, ctx);
         }
 
         static int reset_compression_context(Context ctx)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_reset_compression_context(ctx);
         }
 
         static int compress(Context ctx, u8* dest, int* dest_size, u8* src, int src_size)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_compress(ctx, dest, dest_size, src, src_size);
         }
 
         static void destroy_compression_context(Context ctx)
         {
+            CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             m_destroy_compression_context(ctx);
         }
 
