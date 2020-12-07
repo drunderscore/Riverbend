@@ -22,6 +22,7 @@
 #include <LibXNA/Compress/XCompress.h>
 #include <Windows.h>
 #include <ShObjIdl.h>
+#include <filesystem>
 #undef MessageBox
 
 int main()
@@ -32,7 +33,13 @@ int main()
 #endif // _DEBUG
         CHECK_MSG(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0, "SDL failed to initialize: %s", SDL_GetError());
         CHECK_MSG(SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED | COINIT_DISABLE_OLE1DDE)), "COM failed to initialize");
-        CHECK_MSG(LibXNA::XCompress::load(), "XCompress failed to initialize");
+
+        if(!LibXNA::XCompress::load())
+        {
+            MessageBox::open("XCompress failed to initialize", "Ensure you have xcompress64.dll (or xcompress32.dll) next to Riverbend.exe",
+                             MessageBox::Type::Error, MessageBox::Button::OK);
+                    return 1;
+        }
 
         Application app;
 
