@@ -25,12 +25,13 @@ namespace LibXNA
     public:
         virtual ~Context() {}
         virtual int reset() = 0;
-        virtual int perform(u8* dest, int* dest_size, u8* src, int src_size) = 0;
+        virtual int perform(u8* dest, raw_ptr* dest_size, const u8* src, int src_size) = 0;
 
         bool is_valid() { return m_ctx != nullptr; }
         int return_value() { return m_creation_return; }
 
     protected:
+        static const XCompress::CodecParameters m_default_parameters;
         XCompress::Context m_ctx;
         int m_creation_return;
     };
@@ -38,9 +39,11 @@ namespace LibXNA
     class DecompressionContext : public Context
     {
     public:
-        DecompressionContext(XMEMCODEC_TYPE codec, void* params = nullptr, int flags = 0)
+        DecompressionContext() : DecompressionContext(XCompress::CodecType::LZX, Context::m_default_parameters) {}
+
+        DecompressionContext(XCompress::CodecType codec, XCompress::CodecParameters params, int flags = 0)
         {
-            m_creation_return = XCompress::create_decompression_context(codec, params, flags, &m_ctx);
+            m_creation_return = XCompress::create_decompression_context(codec, &params, flags, &m_ctx);
         }
 
         int reset() override
@@ -48,7 +51,7 @@ namespace LibXNA
             return XCompress::reset_decompression_context(m_ctx);
         }
 
-        int perform(u8* dest, int* dest_size, u8* src, int src_size) override
+        int perform(u8* dest, raw_ptr* dest_size, const u8* src, int src_size) override
         {
             return XCompress::decompress(m_ctx, dest, dest_size, src, src_size);
         }
@@ -63,9 +66,11 @@ namespace LibXNA
     class CompressionContext : public Context
     {
     public:
-        CompressionContext(XMEMCODEC_TYPE codec, void* params = nullptr, int flags = 0)
+        CompressionContext() : CompressionContext(XCompress::CodecType::LZX, Context::m_default_parameters) {}
+
+        CompressionContext(XCompress::CodecType codec, XCompress::CodecParameters params, int flags = 0)
         {
-            m_creation_return = XCompress::create_compression_context(codec, params, flags, &m_ctx);
+            m_creation_return = XCompress::create_compression_context(codec, &params, flags, &m_ctx);
         }
 
         int reset() override
@@ -73,7 +78,7 @@ namespace LibXNA
             return XCompress::reset_compression_context(m_ctx);
         }
 
-        int perform(u8* dest, int* dest_size, u8* src, int src_size) override
+        int perform(u8* dest, raw_ptr* dest_size, const u8* src, int src_size) override
         {
             return XCompress::compress(m_ctx, dest, dest_size, src, src_size);
         }

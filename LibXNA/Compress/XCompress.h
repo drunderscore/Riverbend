@@ -24,30 +24,36 @@
 
 namespace LibXNA
 {
-    enum class XMEMCODEC_TYPE : int
-    {
-        XMEMCODEC_DEFAULT = 0,
-        XMEMCODEC_LZX = 1
-    };
-
     class XCompress
     {
     public:
+        enum class CodecType : int
+        {
+            Default,
+            LZX
+        };
+
+        struct CodecParameters
+        {
+            int flags;
+            int window_size;
+            int compression_partition_size;
+        };
 
         static bool load();
         static bool has_loaded_library() { return m_has_loaded_library; }
         typedef void* Context;
-        typedef int (__stdcall *XMemCreateDecompressionContext_fn)(XMEMCODEC_TYPE codec, void* params, int flags, Context);
+        typedef int (__stdcall *XMemCreateDecompressionContext_fn)(CodecType codec, CodecParameters* params, int flags, Context);
         typedef int (__stdcall *XMemResetDecompressionContext_fn)(Context);
-        typedef int (__stdcall *XMemDecompress_fn)(Context, u8* dest, int* dest_size, u8* src, int src_size);
+        typedef int (__stdcall *XMemDecompress_fn)(Context, u8* dest, raw_ptr* dest_size, const u8* src, int src_size);
         typedef void (__stdcall *XMemDestroyDecompressionContext_fn)(Context);
 
-        typedef int (__stdcall *XMemCreateCompressionContext_fn)(XMEMCODEC_TYPE codec, void* params, int flags, Context);
+        typedef int (__stdcall *XMemCreateCompressionContext_fn)(CodecType codec, CodecParameters* params, int flags, Context);
         typedef int (__stdcall *XMemResetCompressionContext_fn)(Context);
-        typedef int (__stdcall *XMemCompress_fn)(Context, u8* dest, int* dest_size, u8* src, int src_size);
+        typedef int (__stdcall *XMemCompress_fn)(Context, u8* dest, raw_ptr* dest_size, const u8* src, int src_size);
         typedef void (__stdcall *XMemDestroyCompressionContext_fn)(Context);
 
-        static int create_decompression_context(XMEMCODEC_TYPE codec, void* params, int flags, Context ctx)
+        static int create_decompression_context(CodecType codec, CodecParameters* params, int flags, Context ctx)
         {
             CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_create_decompression_context(codec, params, flags, ctx);
@@ -59,7 +65,7 @@ namespace LibXNA
             return m_reset_decompression_context(ctx);
         }
 
-        static int decompress(Context ctx, u8* dest, int* dest_size, u8* src, int src_size)
+        static int decompress(Context ctx, u8* dest, raw_ptr* dest_size, const u8* src, int src_size)
         {
             CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_decompress(ctx, dest, dest_size, src, src_size);
@@ -71,7 +77,7 @@ namespace LibXNA
             m_destroy_decompression_context(ctx);
         }
 
-        static int create_compression_context(XMEMCODEC_TYPE codec, void* params, int flags, Context ctx)
+        static int create_compression_context(CodecType codec, CodecParameters* params, int flags, Context ctx)
         {
             CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_create_compression_context(codec, params, flags, ctx);
@@ -83,7 +89,7 @@ namespace LibXNA
             return m_reset_compression_context(ctx);
         }
 
-        static int compress(Context ctx, u8* dest, int* dest_size, u8* src, int src_size)
+        static int compress(Context ctx, u8* dest, raw_ptr* dest_size, const u8* src, int src_size)
         {
             CHECK_MSG(has_loaded_library(), "XCompress library hasn't been loaded yet");
             return m_compress(ctx, dest, dest_size, src, src_size);

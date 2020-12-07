@@ -12,6 +12,7 @@ add_library(LibXNA STATIC
     Compress/XCompress.h
     Compress/XCompress.cpp
     Compress/Context.h
+    Compress/Context.cpp
 
     TypeReaders/Reader.h
     TypeReaders/Texture2DReader.h
