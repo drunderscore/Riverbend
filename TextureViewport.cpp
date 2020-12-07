@@ -22,6 +22,12 @@ TextureViewport::TextureViewport(Application& app) : Viewport(app)
     auto texture_reader = dynamic_cast<LibXNA::Texture2DReader*>(app.loaded_reader().get());
     CHECK_MSG(texture_reader != nullptr, "Couldn't get Texture2DReader from application");
 
+    if(texture_reader->format() != LibXNA::SurfaceFormat::Color)
+    {
+        app.show_dialog("Cannot display texture", "This texture uses a surface format that cannot yet be displayed");
+        return;
+    }
+
     auto type = app.loaded_xnb()->header().m_target_platform == LibXNA::TargetPlatform::Xbox ? Texture::Type::UnsignedInt8 : Texture::Type::UnsignedInt8Reverse;
     for(auto &kv : texture_reader->data())
     {

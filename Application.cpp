@@ -117,38 +117,32 @@ void Application::load_file(std::filesystem::path path)
     auto xnb = LibXNA::XNB::parse(stream);
     if(!xnb)
     {
-        std::stringstream error_text;
-        error_text << "The XNB failed to parse:\n" << xnb.error().c_str();
-        show_dialog("Could not parse XNB", error_text.str());
+        show_dialog("Could not parse XNB", fmt::format("The XNB failed to parse:\n{}", xnb.error()));
         return;
     }
 
     m_loaded_xnb = std::make_shared<LibXNA::XNB>(*xnb);
 
     auto created_viewport = false;
-    if(xnb->is_compressed())
-        show_dialog("XNB is compressed", "This XNB file is compressed. You can view basic information, but there is currently no support for viewing this data.");
-    else
+    if(auto primary = xnb->primary_object())
     {
-        if(auto primary = xnb->primary_object())
+        // TODO: Decide what reader to load inside of LibXNA
+        // TODO: Load off render thread, and display loading
+        if(primary->reader().type_name() == LibXNA::Texture2DReader::type_name())
         {
-            // TODO: Decide what reader to load inside of LibXNA
-            // TODO: Load off render thread, and display loading
-            if(primary->reader().type_name() == LibXNA::Texture2DReader::type_name())
-            {
-                m_loaded_reader = std::make_shared<LibXNA::Texture2DReader>(stream);
-                created_viewport = true;
-                m_viewport = std::make_shared<TextureViewport>(*this);
-            }
-            else
-            {
-                show_dialog("Unknown primary object type name", "This type name is unimplemented or unknown, so it cannot be displayed.");
-            }
+            LibFruit::Stream data_stream(xnb->data());
+            m_loaded_reader = std::make_shared<LibXNA::Texture2DReader>(data_stream);
+            created_viewport = true;
+            m_viewport = std::make_shared<TextureViewport>(*this);
         }
         else
         {
-            show_dialog("No primary object", "This XNB does not have any primary object, so it cannot be displayed.");
+            show_dialog("Unknown primary object type name", "This type name is unimplemented or unknown, so it cannot be displayed.");
         }
+    }
+    else
+    {
+        show_dialog("No primary object", "This XNB does not have any primary object, so it cannot be displayed.");
     }
 
     if(!created_viewport)

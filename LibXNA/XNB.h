@@ -87,11 +87,8 @@ namespace LibXNA
         const Header& header() const { return m_header; }
         std::optional<LibFruit::DataSize> decompressed_size() { return m_decompressed_size; }
         const std::optional<TypeReader> primary_object() const;
-
-        LibFruit::DataSize total_size()
-        {
-            return m_header.m_total_size;
-        }
+        LibFruit::DataSize total_size() { return m_header.m_total_size; }
+        const std::vector<u8>& data() const { return m_data; }
 
         bool is_compressed()
         {
@@ -109,5 +106,7 @@ namespace LibXNA
         std::vector<TypeReader> m_type_readers;
         u32 m_shared_resource_count = 0;
         u32 m_primary_object_typeid = 0;
+        // This is always decompressed data, starting at the primary asset data.
+        std::vector<u8> m_data;
     };
 }

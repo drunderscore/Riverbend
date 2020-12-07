@@ -19,7 +19,7 @@
 #include "Application.h"
 #include <LibFruit/Graphics/MessageBox.h>
 #include "SDL.h"
-#include "LibXNA/Compress/XCompress.h"
+#include <LibXNA/Compress/XCompress.h>
 #include <Windows.h>
 #include <ShObjIdl.h>
 #undef MessageBox
@@ -32,6 +32,7 @@ int main()
 #endif // _DEBUG
         CHECK_MSG(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0, "SDL failed to initialize: %s", SDL_GetError());
         CHECK_MSG(SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED | COINIT_DISABLE_OLE1DDE)), "COM failed to initialize");
+        CHECK_MSG(LibXNA::XCompress::load(), "XCompress failed to initialize");
 
         Application app;
 
